@@ -1,0 +1,3 @@
+[회의 개요]
+- meeting date/time: YYYY/MM/DD 22:35
+- Participants: 최찬우, 정원우, 최종건
