@@ -1,0 +1,4 @@
+python manage.py runserver
+./ngrok http --domain=quail-relative-noticeably.ngrok-free.app 8000
+이후 아래 사이트로 접속하면 됨
+https://quail-relative-noticeably.ngrok-free.app
