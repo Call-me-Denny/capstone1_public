@@ -9,12 +9,12 @@ ChatGPT API를 활용한 MOM 작성 자동화
 
 #### 1 - Clone repo
 ```
-git clone https://github.com/Call-me-Denny/capstone1.git
+git clone https://github.com/Call-me-Denny/capstone1.git](https://github.com/Call-me-Denny/capstone1_public.git
 ```
 
 #### 2 - Install requirements
 ```
-cd capstone1
+cd capstone1_public
 pip install -r requirements.txt
 ```
 
