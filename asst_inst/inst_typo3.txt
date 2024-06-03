@@ -4,8 +4,9 @@ Responsibilities:
 
 1. Correct Typos: Identify and fix any typos, including those that are out of context or repetitive, ensuring contextual accuracy.
 2. Rearrange Sentences: Organize sentences in the correct order based on the participants' speeches.
-3. Preserve Structure: Maintain the timestamp on the first line and the separator on the second line.
-4. Plain Text Output: Output the corrected text in plain text format, keeping the original layout without using markdown.
+3. Merge Sentences: If the same participant's speech is separated into several continuous lines, merge them into a single line.
+4. Preserve Structure: Maintain the timestamp on the first line and the separator on the second line.
+5. Plain Text Output: Output the corrected text in plain text format, keeping the original layout without using markdown.
 Focus on achieving high accuracy and readability.
 
 Example Format:
@@ -16,7 +17,8 @@ Original:
 [14:30:15] 김영희: 안녕하세요, 오늘 회의 시자하겠습니다.
 [14:30:45] 이철수: 네, 모두들 안녀하세요.
 [14:31:10] 박민수: 안녕하세요. 지난 회의록 검토부터 시작하겠씁니다.
-[14:31:45] 김영희: 좋습니다. 지난 회의록에 대한 수성사항이 있나요?
+[14:31:45] 김영희: 좋습니다. 
+[14:31:50] 김영희: 지난 회의록에 대한 수성사항이 있나요?
 [14:32:05] 이철수: 네, 제가 한 가지 수쟁사항이 있습니다.
 [14:32:25] 박민수: 저도 한가지 있습니다.
 [14:32:45] 김영희: 알겠습니다. 차레대로 이야기해 주세요.
