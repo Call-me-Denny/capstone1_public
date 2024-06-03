@@ -31,7 +31,7 @@ def main(argv):
 
     # create/retrieve assistant
     client = OpenAI(api_key=OPENAI_API_KEY)
-    my_name = "kang" # assistant separator
+    my_name = "kang" # assistant separator (Must be 4 letters for now)
 
     my_assistants = {}
     for assistant in client.beta.assistants.list():
@@ -55,20 +55,14 @@ def main(argv):
 
     # upload file to retrieved/created vector store
     my_vector_store = None
-    # accumulate된 파일이 새로운 파일 처리 시 간섭하는 현상 발생
-    '''for vector_store in client.beta.vector_stores.list().data:
-        if vector_store.name == my_name:
-            my_vector_store = client.beta.vector_stores.retrieve(vector_store.id)
-            break'''
     if my_vector_store is None:
         my_vector_store = client.beta.vector_stores.create(name=my_name,
                                                            expires_after={'anchor':'last_active_at',
                                                                           'days':1}
                                                             )
-    file_streams = [open(argv[1], "rb")]
-    file_batch = client.beta.vector_stores.file_batches.upload_and_poll(
+    original_file = client.beta.vector_stores.files.upload_and_poll(
         vector_store_id=my_vector_store.id,
-        files=file_streams
+        file=open(argv[1], "rb")
     )
 
 
@@ -98,12 +92,21 @@ def main(argv):
                     mode="w",
                     encoding="utf-8") as output:
                 output.write(message_content.value)
+            if subject == "typo3":
+                client.beta.vector_stores.files.delete(
+                    vector_store_id=my_vector_store.id,
+                    file_id=original_file.id
+                )
+                client.beta.vector_stores.files.upload_and_poll(
+                    vector_store_id=my_vector_store.id,
+                    file=open(f"{argv[1][:-4]}_typo3.txt", "rb")
+                )
         if subject == subjects[-1]:
             break
         message = client.beta.threads.messages.create(
             thread_id=thread.id,
             role="user",
-            content="Do your task as your instruction considering previously extracted informations"
+            content="Do your task as your instruction considering previously extracted informations and attached file"
         )
 
 
