@@ -1,13 +1,9 @@
 import sys, os
 from openai import OpenAI
 
-def main(argv):
-    # handling errors
-    if len(argv) != 2:
-        print("usage: postprocess_multiple.py <PATH_OF_TRANSCRIPT>")
-        exit()
-        
-    if(not os.path.exists(argv[1])):
+def postprocess(argv):
+    # handling errors        
+    if(not os.path.exists(argv)):
        print("Transcript file not found")
        exit()
 
@@ -62,7 +58,7 @@ def main(argv):
                                                             )
     original_file = client.beta.vector_stores.files.upload_and_poll(
         vector_store_id=my_vector_store.id,
-        file=open(argv[1], "rb")
+        file=open(argv, "rb")
     )
 
 
@@ -70,7 +66,7 @@ def main(argv):
     thread = client.beta.threads.create(
         messages=[
             {"role":"user",
-             "content":f"Do your task as your instruction with '{argv[1]}'file"
+             "content":f"Do your task as your instruction with '{argv}'file"
             }
         ],
         tool_resources={"file_search":{"vector_store_ids": [my_vector_store.id]}}
@@ -88,7 +84,7 @@ def main(argv):
         message_content = messages[0].content[0].text
         print(message_content.value)
         if subject != "topic":
-            with open(f"{argv[1][:-4]}_{subject}.txt",
+            with open(f"{argv[:-4]}_{subject}.txt",
                     mode="w",
                     encoding="utf-8") as output:
                 output.write(message_content.value)
@@ -99,7 +95,7 @@ def main(argv):
                 )
                 client.beta.vector_stores.files.upload_and_poll(
                     vector_store_id=my_vector_store.id,
-                    file=open(f"{argv[1][:-4]}_typo3.txt", "rb")
+                    file=open(f"{argv[:-4]}_typo3.txt", "rb")
                 )
         if subject == subjects[-1]:
             break
@@ -112,5 +108,7 @@ def main(argv):
 
 if __name__ == "__main__":
     argv = sys.argv
-    main(argv)
-    # main(["asdf", "ex3.txt"])
+    if len(argv) != 2:
+        print("usage: postprocess_multiple.py <PATH_OF_TRANSCRIPT>")
+        exit()
+    postprocess(argv[1])
